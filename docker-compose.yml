@@ -1,0 +1,20 @@
+services:
+  db:
+    image: pgvector/pgvector:pg16
+    container_name: lm_db
+    environment:
+      POSTGRES_USER: lm
+      POSTGRES_PASSWORD: lm
+      POSTGRES_DB: livingmemory
+    ports:
+      - "5433:5432"
+    volumes:
+      - lm_pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U lm -d livingmemory"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  lm_pgdata:
